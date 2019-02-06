@@ -1,0 +1,79 @@
+{
+  "posts": [
+    {
+      "title": "Mr.",
+      "name": "Rajendra Prasaad",
+      "age": "23",
+      "comment": "He is a man of India.",
+      "id": 76
+    },
+    {
+      "id": 77
+    },
+    {
+      "title": "Mr.",
+      "name": "Bipansh Sahu",
+      "age": "45",
+      "comment": "wdwefwfwdd",
+      "id": 78
+    },
+    {
+      "title": "Mr.",
+      "name": "Aman",
+      "age": "34",
+      "comment": "vxvcb dfb",
+      "id": 79
+    },
+    {
+      "title": "Mr.",
+      "name": "Bhupendra Sahu",
+      "age": "29",
+      "comment": "He is Employee.",
+      "id": 80
+    },
+    {
+      "title": "152",
+      "name": "nnvs",
+      "age": "25",
+      "comment": "gsrg",
+      "id": 81
+    },
+    {
+      "title": "Mr.",
+      "name": "Rajesh ",
+      "age": "54",
+      "comment": "He is Employee",
+      "id": 82
+    }
+  ],
+  "comments": [
+    {
+      "postId": "76",
+      "body": "Hello sir",
+      "id": 13
+    },
+    {
+      "postId": "78",
+      "body": "Hello sir",
+      "id": 14
+    },
+    {
+      "postId": "77",
+      "body": "gtryht",
+      "id": 15
+    },
+    {
+      "postId": "76",
+      "body": "rthrt",
+      "id": 16
+    },
+    {
+      "postId": "78",
+      "body": "trhrtjh",
+      "id": 17
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
