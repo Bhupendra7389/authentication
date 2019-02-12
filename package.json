@@ -7,6 +7,7 @@
     "bcrypt": "^3.0.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.3",
@@ -16,8 +17,12 @@
     "react-cookies": "^0.1.0",
     "react-dom": "^16.4.2",
     "react-native-cookie": "^0.2.0",
+    "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.3"
+    "react-scripts": "2.1.3",
+    "redux": "^4.0.1",
+    "redux-saga": "^1.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

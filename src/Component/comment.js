@@ -1,46 +1,59 @@
 import React, { Component } from "react";
-import axios from "axios";
-//import { connect } from "react-redux";
-//import { fetchPosts } from "../actions/postActions";
+
+import { connect } from "react-redux";
+
 class Comment extends Component {
   constructor(props) {
     super(props);
-    this.state = { postId: this.props.postId, comments: [] };
+    this.state = { postId: this.props.postId, comments: "" };
   }
 
   handleComment = e => {
+    e.preventDefault();
     this.setState({ comment: e.target.value });
   };
   handleClick = e => {
-    axios
-      .post("http://localhost:3004/comments", {
-        postId: e.target.value,
-        body: this.state.comment
-      })
-      .then(response => {
-        console.log(response.data);
-      });
-    window.location.reload();
+    e.preventDefault();
+    const commentData = { postId: e.target.value, body: this.state.comment };
+    this.setState({ comments: "" });
+    this.props.postComment(commentData);
+    this.setState({ comment: "" });
+  };
+  deleteComment = e => {
+    const value = { postId: e.target.value };
+
+    this.props.deleteComment(value);
   };
   componentDidMount = () => {
-    axios
-      .get("http://localhost:3004/comments?postId=" + this.props.postId)
-      .then(response => {
-        const comments = response.data;
-        this.setState({ comments });
-      });
+    this.props.getComment();
+    this.setState({
+      comments: this.props.comment
+    });
   };
+
   render() {
     return (
       <div>
         <ul className="collection">
-          {this.state.comments.map(comment => (
+          {this.props.CommentData.map(post => (
             <li
-              key={comment.id}
+              key={post._id}
               className="collection-item left-align red lighten-3 m-1"
             >
               <div className="p-2 border border-primary">
-                <p>{comment.body}</p>
+                {post.comments.map(post => (
+                  <div className="p-2 border border-primary" key={post}>
+                    {post}
+                  </div>
+                ))}
+                <br />
+                <button
+                  className="badge badge-danger badge-sm"
+                  onClick={this.deleteComment}
+                  value={post._id}
+                >
+                  DELETE
+                </button>
               </div>
             </li>
           ))}
@@ -64,4 +77,24 @@ class Comment extends Component {
     );
   }
 }
-export default Comment;
+const mapStateToProps = state => {
+  return {
+    CommentData: state.data
+  };
+};
+const mapDisPatchToProps = dispatch => {
+  return {
+    postComment: commentData => dispatch({ type: "POST_COMMENT", commentData }),
+
+    getComment: () =>
+      dispatch({
+        type: "GET_COMMENT"
+      }),
+
+    deleteComment: req => dispatch({ type: "COMM_DELETE", req })
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDisPatchToProps
+)(Comment);

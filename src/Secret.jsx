@@ -1,23 +1,22 @@
 import React, { Component } from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import AddMember from "./Component/AddMember";
-//import { instanceOf } from "prop-types";
-//import { Cookies } from "react-cookie";
-import cookie from "react-cookies";
+import { withCookies } from "react-cookie";
 import Posts from "./Fetch.js";
+import Cookies from "universal-cookie";
 
-export default class Secret extends Component {
+class Secret extends Component {
   constructor() {
     super();
     this.state = {
-      userId: cookie.load("userId"),
       message: "Loading..."
     };
+    this.handleLogout = this.handleLogout.bind(this);
   }
   handleLogout = () => {
-    cookie.save("token", { path: "/" });
-    cookie.remove("token", { path: "/" });
-    console.log(cookie.load("token"));
+    const cookies = new Cookies();
+    cookies.remove("token");
+    this.props.history.push("/login");
   };
 
   componentDidMount() {
@@ -52,10 +51,6 @@ export default class Secret extends Component {
         </div>
 
         <div>
-          {/* <BrowserRouter> */}
-
-          {/* </BrowserRouter> */}
-
           <Switch>
             <Route path="/AddMember" component={AddMember} />
           </Switch>
@@ -69,3 +64,5 @@ export default class Secret extends Component {
     );
   }
 }
+
+export default withCookies(Secret);

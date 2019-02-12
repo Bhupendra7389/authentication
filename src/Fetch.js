@@ -1,21 +1,19 @@
 import React, { Component } from "react";
 import "./bootstrap.css";
-import axios from "axios";
+
 import Comment from "./Component/comment";
+import { connect } from "react-redux";
+
 class Posts extends Component {
   constructor() {
     super();
     this.state = {
       posts: []
-      //comment: ""
     };
   }
 
   componentDidMount = () => {
-    axios.get("http://localhost:3004/posts").then(response => {
-      const posts = response.data;
-      this.setState({ posts });
-    });
+    this.props.getMember();
   };
   render() {
     return (
@@ -24,9 +22,9 @@ class Posts extends Component {
         <div className="col-md m-1">
           <div className="jumbotron-div col s12">
             <ul className="collection">
-              {this.state.posts.map(post => (
+              {this.props.posts.map(post => (
                 <li
-                  key={post.id}
+                  key={post._id}
                   className="collection-item left-align red lighten-3 m-1"
                 >
                   <div className="p-2 border border-primary">
@@ -42,7 +40,7 @@ class Posts extends Component {
                       <small>Comments -{post.author}</small>
                     </div>
                     <div>
-                      <Comment postId={post.id} />
+                      <Comment postId={post._id} />
                     </div>{" "}
                   </div>
                   <br />
@@ -56,5 +54,20 @@ class Posts extends Component {
     );
   }
 }
-
-export default Posts;
+const mapDispatchToProps = dispatch => {
+  return {
+    getMember: () =>
+      dispatch({
+        type: "ADD_MEMBER"
+      })
+  };
+};
+const mapStateToProps = state => {
+  return {
+    posts: state.members
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Posts);

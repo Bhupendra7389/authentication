@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import axios from "axios";
+import Cookies from "universal-cookie";
 
-export default class Home extends Component {
+import { connect } from "react-redux";
+
+class Home extends Component {
   constructor() {
     super();
     this.state = {
@@ -11,29 +13,37 @@ export default class Home extends Component {
       password: ""
     };
   }
+  componentDidMount() {
+    const cookies = new Cookies();
+    cookies.remove("token");
+  }
   handleInputChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
-    // const { value, name } = e.target;
-    // this.setState({
-    //   [name]: value
-    // });
   };
-  onSubmit = () => {
-    axios.post("/api/register", {
+  handleSubmit = () => {
+    const post = {
       First_Name: this.state.First_Name,
       Last_Name: this.state.Last_Name,
       email: this.state.email,
       password: this.state.password
+    };
+
+    this.props.sendData(post);
+    this.setState({
+      First_Name: "",
+      Last_Name: "",
+      email: "",
+      password: ""
     });
   };
 
   render() {
     return (
       <div>
-        <h1>register</h1>
-        <form onSubmit={this.onSubmit} className="container">
+        <h1>Register</h1>
+        <div className="container">
           <div className="form-group">
             <input
               className="form-control"
@@ -75,10 +85,21 @@ export default class Home extends Component {
               required
             />
             <br />
-            <input className="form-control" type="submit" value="Submit" />
+            <button className=" btn btn-danger " onClick={this.handleSubmit}>
+              ADD-MEMBER
+            </button>
           </div>
-        </form>
+        </div>
       </div>
     );
   }
 }
+const mapDispatchToProps = dispatch => {
+  return {
+    sendData: post => dispatch({ type: "SEND_DATA", post })
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps
+)(Home);

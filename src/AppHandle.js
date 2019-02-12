@@ -4,10 +4,10 @@ import withAuth from "./withAuth";
 import Home from "./Home";
 import Secret from "./Secret";
 import Login from "./Login";
-//import ReactDOM from "react-dom";
+
 import Register from "./Register";
 import AddMember from "./Component/AddMember";
-//import { BrowserRouter } from "react-router-dom";
+
 import "./bootstrap.css";
 
 class AppHandle extends Component {
@@ -15,12 +15,10 @@ class AppHandle extends Component {
     return (
       <div>
         <div>
-          {/* <BrowserRouter> */}
           <nav className="navbar navbar-dark bg-dark">
             <Link to="/">Home</Link>
             <br />
-
-            <Link to="/secret">Secret</Link>
+            <Link to="/secret">Profile</Link>
             <br />
 
             <Link to="/login">Login</Link>
@@ -29,10 +27,9 @@ class AppHandle extends Component {
             <Link to="/Register">Register</Link>
             <br />
           </nav>
-          {/* </BrowserRouter> */}
 
           <Switch>
-            <Route path="/" exact component={Home} />
+            <Route path="/" exact render={Home.render} />
             <Route path="/secret" component={withAuth(Secret)} />
             <Route path="/login" component={Login} />
             <Route path="/Register" component={Register} />

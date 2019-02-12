@@ -1,25 +1,31 @@
-import React, { Component } from 'react';
-
-export default class Home extends Component {
+import React, { Component } from "react";
+import Cookies from "universal-cookie";
+import { withCookies } from "react-cookie";
+class Home extends Component {
   constructor() {
     super();
     this.state = {
-      message: 'Loading...'
-    }
+      message: "Loading..."
+    };
   }
-  
+
   componentDidMount() {
-    fetch('/api/home')
+    const cookies = new Cookies();
+    cookies.remove("token");
+    fetch("/api/home")
       .then(res => res.text())
-      .then(res => this.setState({message: res}));
+      .then(res => this.setState({ message: res }));
   }
-  
+
   render() {
     return (
       <div>
-        <h1>Home</h1>
-        <p>{this.state.message}</p>
+        <h3>Home</h3>
+        <center>
+          <h1>{this.state.message}</h1>
+        </center>
       </div>
     );
   }
 }
+export default withCookies(Home);

@@ -12,9 +12,13 @@ const withAuth = require("./middleware");
 const app = express();
 
 const secret = "mysecret";
+app.use(bodyParser.json()).use(morgan());
+var cors = require("cors");
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json()).use(morgan());
+
 app.use(cookieParser());
 
 const mongo_uri = "mongodb://localhost:27017/react-auth";
@@ -25,12 +29,24 @@ mongoose.connect(mongo_uri, { useNewUrlParser: true }, function(err) {
     console.log(`Successfully connected to ${mongo_uri}`);
   }
 });
+app.put("/api/comment/:postId", async (req, res) => {
+  try {
+    const post = await AddUser.findByIdAndUpdate(
+      {
+        _id: req.params.postId
+      },
+      { $push: { comments: req.body.comments } },
+      {
+        new: true
+      }
+    );
+    res.send(post);
+  } catch (error) {
+    res.status(500);
+  }
+});
 
 app.use(express.static(path.join(__dirname, "public")));
-
-app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
 
 app.get("/api/home", function(req, res) {
   res.send("Welcome!");
@@ -39,11 +55,14 @@ app.get("/api/home", function(req, res) {
 app.get("/api/secret", withAuth, function(req, res) {
   res.send("You have access to manage this account");
 });
-// app.use("/api/logout", function(req, res) {
-//   Cookie.remove("token", { path: "http://localhost:3000" });
-// });
+app.get("/api/getcomments", async (req, res) => {
+  const comm = await AddUser.find({});
+
+  res.send(comm);
+});
 
 app.post("/api/register", function(req, res) {
+  console.log(JSON.stringify(req.body));
   const { First_Name, Last_Name, email, password } = req.body;
   const user = new User({ First_Name, Last_Name, email, password });
   user.save(function(err) {
@@ -55,24 +74,41 @@ app.post("/api/register", function(req, res) {
     }
   });
 });
+app.delete("/api/deleteUser/:postId", async (req, res) => {
+  try {
+    const post = await AddUser.findByIdAndDelete({
+      _id: req.params.postId
+    });
+    res.send(post);
+  } catch (error) {
+    res.status(500);
+  }
+});
 app.post("/api/AddUser", function(req, res) {
-  console.log(res.body);
+  debugger;
+  console.log("Server" + req.body);
   const adduser = new AddUser();
   adduser.title = req.body.title;
   adduser.name = req.body.name;
   adduser.comment = req.body.comment;
   adduser.age = req.body.age;
-  adduser.adduser.save(function(err) {
+  adduser.save(function(err) {
     if (err) {
       console.log(err);
       res.status(500).send("Error registering new user please try again.");
     } else {
-      res.status(200).send(user);
+      console.log("Welcome User");
     }
   });
 });
+app.get("/api/getUser", async (req, res) => {
+  const post = await AddUser.find({});
+  console.log(post);
+  res.send(post);
+});
 
 app.post("/api/authenticate", function(req, res) {
+  console.log("Data" + req.body);
   const { email, password } = req.body;
 
   User.findOne({ email }, function(err, user) {
@@ -99,9 +135,10 @@ app.post("/api/authenticate", function(req, res) {
         } else {
           const payload = { email };
           const token = jwt.sign(payload, secret, {
-            expiresIn: "2min"
+            expiresIn: "30 min"
           });
-          res.cookie("token", token, { httpOnly: true }).sendStatus(200);
+          res.send({ token: token });
+          //console.log("token Data" + token);
         }
       });
     }
