@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Cookies from "universal-cookie";
-//import { withCookies } from "react-cookie";
+
 import { connect } from "react-redux";
 
 class Login extends Component {
@@ -26,7 +26,8 @@ class Login extends Component {
   handleSubmit = () => {
     const data = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      history: this.props.history
     };
 
     this.props.login(data);
@@ -35,32 +36,6 @@ class Login extends Component {
       email: "",
       password: ""
     });
-    // await this.props.history.push("/secret");
-
-    // event.preventDefault();
-    // fetch("/api/authenticate", {
-    //   method: "POST",
-    //   body: JSON.stringify(this.state),
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   }
-    // })
-    //   .then(res => {
-    //     if (res.status === 200) {
-    //       const cookies = new Cookies();
-    //       res.json().then(resp => {
-    //         cookies.set("token", resp.token);
-    //         this.props.history.push("/secret");
-    //       });
-    //     } else {
-    //       const error = new Error(res.error);
-    //       throw error;
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //     alert("Wrong Email or Password");
-    //   });
   };
 
   render() {

@@ -8,6 +8,8 @@ const mongoose = require("mongoose");
 const User = require("./models/User");
 const AddUser = require("./models/AddUser");
 const withAuth = require("./middleware");
+const passport = require("passport");
+require("./src/passport");
 
 const app = express();
 
@@ -52,9 +54,14 @@ app.get("/api/home", function(req, res) {
   res.send("Welcome!");
 });
 
-app.get("/api/secret", withAuth, function(req, res) {
-  res.send("You have access to manage this account");
-});
+app.get(
+  "/api/secret",
+  withAuth,
+
+  function(req, res) {
+    res.send("You have access to manage this account");
+  }
+);
 app.get("/api/getcomments", async (req, res) => {
   const comm = await AddUser.find({});
 

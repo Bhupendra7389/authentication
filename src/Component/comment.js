@@ -35,13 +35,13 @@ class Comment extends Component {
     return (
       <div>
         <ul className="collection">
-          {this.props.CommentData.map(post => (
+          {this.props.CommentData.map(postdata => (
             <li
-              key={post._id}
+              key={postdata._id}
               className="collection-item left-align red lighten-3 m-1"
             >
               <div className="p-2 border border-primary">
-                {post.comments.map(post => (
+                {postdata.comments.map(post => (
                   <div className="p-2 border border-primary" key={post}>
                     {post}
                   </div>
@@ -50,7 +50,7 @@ class Comment extends Component {
                 <button
                   className="badge badge-danger badge-sm"
                   onClick={this.deleteComment}
-                  value={post._id}
+                  value={postdata._id}
                 >
                   DELETE
                 </button>

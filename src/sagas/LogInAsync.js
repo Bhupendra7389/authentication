@@ -1,7 +1,7 @@
 import Cookies from "universal-cookie";
 
 export default function* loginAsync(action) {
-  fetch("http://localhost:8080/api/authenticate", {
+  yield fetch("http://localhost:8080/api/authenticate", {
     method: "POST",
     body: JSON.stringify(action.pushData),
     headers: {
@@ -9,13 +9,11 @@ export default function* loginAsync(action) {
     }
   })
     .then(res => {
-      console.log(res);
       if (res.status === 200) {
         const cookies = new Cookies();
         res.json().then(resp => {
           cookies.set("token", resp.token);
-          //Window.history.push("/secret");
-          alert("You are Successfully Logged-In");
+          action.pushData.history.push("/secret");
         });
       } else {
         const error = new Error(res.error);
